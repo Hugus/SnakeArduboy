@@ -38,7 +38,11 @@ namespace H
         bool keepGoing() ;
 
         private:
+        //! Snake movement
         bool move( const Direction direction ) ;
+
+        //! Movement rules
+        bool canMove( const Direction direction ) ;
 
         private:
         //! Snake bones

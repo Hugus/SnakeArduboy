@@ -36,11 +36,10 @@ H::Snake::up
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->y <= DELTA_POS )
+    if ( canMove( UP ) )
     {
-        return false ;
+        return move( UP ) ;
     }
-    return move( UP ) ;
 }
 
 //! Snake movement
@@ -50,11 +49,10 @@ H::Snake::down
 )
 {
     // If movement is possible
-if ( m_bones.head()->value()->y >= m_height - DELTA_POS )
+    if ( canMove( DOWN ) )
     {
-        return false ;
+        return move( DOWN ) ;
     }
-    return move( DOWN ) ;
 }
 
 //! Snake movement
@@ -64,11 +62,10 @@ H::Snake::right
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->x >= m_width - DELTA_POS )
+    if ( canMove( RIGHT ) )
     {
-        return false ;
+        return move( RIGHT ) ;
     }
-    return move( RIGHT ) ;
 }
 
 //! Snake movement
@@ -78,11 +75,10 @@ H::Snake::left
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->x <= DELTA_POS )
+    if ( canMove( LEFT ) )
     {
-        return false ;
+        return move( LEFT ) ;
     }
-    return move( LEFT ) ;
 }
 
 //! Continue moving
@@ -145,3 +141,42 @@ H::Snake::move
 
     return true ;
 }
+
+//! Movement rules
+bool
+H::Snake::canMove
+(
+    const Direction direction
+)
+{
+    // First test walls, then bones
+    switch ( direction )
+    {
+        case UP:
+            if ( m_bones.head()->value()->y <= DELTA_POS )
+            {
+                return false ;
+            }
+            break;
+        case DOWN:
+            if ( m_bones.head()->value()->y >= m_height - DELTA_POS )
+            {
+                return false ;
+            }
+            break;
+        case RIGHT:
+            if ( m_bones.head()->value()->x >= m_width - DELTA_POS )
+            {
+                return false ;
+            }
+            break;
+        case LEFT:
+            if ( m_bones.head()->value()->x <= DELTA_POS )
+            {
+                return false ;
+            }
+            break;
+    }
+    return true ;
+}
+
