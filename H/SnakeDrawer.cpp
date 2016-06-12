@@ -37,6 +37,14 @@ H::SnakeDrawer::Draw
         b = b->next() ;
     }
 
+    // Draw apple
+    if ( snake.hasApple() )
+    {
+        arduboy.drawPixel( snake.apple().x,
+                           snake.apple().y,
+                           WHITE ) ;
+    }
+
     // Draw walls
     arduboy.drawFastHLine( 0, 0, snake.getWidth(), WHITE ) ;
     arduboy.drawFastHLine( 0, snake.getHeight(), snake.getWidth(), WHITE ) ;

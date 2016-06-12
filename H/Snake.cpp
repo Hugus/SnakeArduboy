@@ -10,7 +10,8 @@ H::Snake::Snake
     unsigned int width,
     unsigned int height
 )
-: m_width( width )
+: m_isApple( false )
+, m_width( width )
 , m_height( height )
 , m_currentDirection( RIGHT )
 {
@@ -111,6 +112,35 @@ H::Snake::keepGoing
     {
         return move( m_currentDirection ) ;
     }
+}
+
+//! Hide apple
+void
+H::Snake::hideApple
+(
+)
+{
+    m_isApple = false ;
+}
+
+//! Has apple ?
+bool
+H::Snake::hasApple
+(
+)
+const
+{
+    return m_isApple ;
+}
+
+//! Where is apple
+const H::Position &
+H::Snake::apple
+(
+)
+const
+{
+    return m_apple ;
 }
 
 bool

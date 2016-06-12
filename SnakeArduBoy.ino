@@ -10,6 +10,8 @@
 Arduboy arduboy;
 
 #define FRAMES_PER_SECOND 20   // The update and refresh speed
+#define INIT_SIZE 5
+#define APPLE_PERIOD 100 // Number of frames between apple spawns
 
 // Sounds
 const byte PROGMEM bing [] = {
@@ -21,9 +23,36 @@ const byte PROGMEM flap [] = {
 const byte PROGMEM hit [] = {
 0x90,60, 0,31, 0x80, 0x90,61, 0,31, 0x80, 0x90,62, 0,31, 0x80, 0xf0};
 
-#define INIT_SIZE 30
+enum GameState
+{
+    INIT,
+    RUNNING,
+    GAME_OVER
+} ;
+
+//! Show apple
+bool
+H::Snake::showApple
+(
+)
+{
+    // Look for an empty spot
+    m_apple.x = random(0, m_width) ;
+    m_apple.y = random(0, m_height) ;
+    while( hasBone( m_apple ) )
+    {
+        m_apple.x = random(0, m_width) ;
+        m_apple.y = random(0, m_height) ;
+    }
+    // Spawn an apple
+    m_isApple = true ;
+}
+
+
 H::Position * pos = new H::Position[INIT_SIZE]() ;
 H::Snake * snake = new H::Snake( pos, INIT_SIZE, WIDTH - 20, HEIGHT - 1 ) ;
+unsigned short frames = 0 ;
+GameState gameState = INIT ;
 
 void setup() {
     arduboy.begin();
@@ -47,13 +76,17 @@ void setup() {
     }
 
     arduboy.initRandomSeed();
-    Serial.println("Init end");
+
+    gameState = RUNNING ;
 }
 
 
 void loop() {
     if (!arduboy.nextFrame())
         return;
+
+    // Increment frame count
+    ++frames;
 
     // Clear screen
     arduboy.clear();
@@ -86,6 +119,31 @@ void loop() {
 
     // Draw snake
     H::SnakeDrawer::Draw( *snake, arduboy ) ;
+
+    if ( ! canMove )
+    {
+        if ( gameState != GAME_OVER )
+        {
+            playSound( flap ) ;
+            gameState = GAME_OVER ;
+        }
+    }
+    else
+    {
+        if ( frames == APPLE_PERIOD - 5 )
+        {
+            snake->hideApple() ;
+        }
+        else if ( frames == 1 )
+        {
+            // Spawn an apple
+            snake->showApple() ;
+        }
+        else if ( frames == APPLE_PERIOD )
+        {
+            frames = 0 ;
+        }
+    }
 
     // Finally draw this thang
     arduboy.display();

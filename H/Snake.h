@@ -42,6 +42,16 @@ namespace H
         //! Continue moving
         bool keepGoing() ;
 
+        //! Show apple
+        bool showApple() ;
+        //! Hide apple
+        void hideApple() ;
+
+        //! Has apple ?
+        bool hasApple() const ;
+        //! Where is apple
+        const Position & apple() const ;
+
         private:
         //! Snake movement
         bool move( const Direction direction ) ;
@@ -58,6 +68,11 @@ namespace H
         private:
         //! Snake bones
         List< Position > m_bones ;
+
+        //! There can be one apple at a time
+        Position m_apple ;
+        //! Is apple spawned ?
+        bool m_isApple ;
 
         //! Space width
         unsigned int m_width ;
