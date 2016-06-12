@@ -41,11 +41,11 @@ H::SnakeDrawer::Draw
     }
 
     // Draw walls
-    arduboy.drawFastHLine( 1, 0, snake.getWidth() * DRAW_FACTOR, WHITE ) ;
-    arduboy.drawFastHLine( 1, snake.getHeight()* DRAW_FACTOR + 1, snake.getWidth()* DRAW_FACTOR, WHITE ) ;
+    arduboy.drawFastHLine( 2, 0, snake.getWidth() * DRAW_FACTOR - 2, WHITE ) ;
+    arduboy.drawFastHLine( 2, snake.getHeight()* DRAW_FACTOR + 1, snake.getWidth()* DRAW_FACTOR - 2, WHITE ) ;
 
-    arduboy.drawFastVLine( 1, 0, snake.getHeight()* DRAW_FACTOR +1, WHITE ) ;
-    arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR, 1, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
+    arduboy.drawFastVLine( 2, 0, snake.getHeight()* DRAW_FACTOR +1, WHITE ) ;
+    arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR -1, 1, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
 
     // Draw score
     arduboy.setCursor( 65, 10 ) ;
