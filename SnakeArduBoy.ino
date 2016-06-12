@@ -9,7 +9,7 @@
 
 Arduboy arduboy;
 
-#define FRAMES_PER_SECOND 20   // The update and refresh speed
+#define FRAMES_PER_SECOND 10   // The update and refresh speed
 #define INIT_SIZE 5
 #define APPLE_PERIOD 100 // Number of frames between apple spawns
 
@@ -56,10 +56,10 @@ void init( H::Snake ** snake )
     // Create initial positions
     for ( unsigned int i = 0 ; i < INIT_SIZE ; ++i )
     {
-        pos[i]= new H::Position( 5 + i, (HEIGHT - 1)/4 ) ;
+        pos[i]= new H::Position( 5 + i, (HEIGHT - 1)/8 ) ;
     }
 
-    *snake = new H::Snake( pos, INIT_SIZE, (WIDTH - 20)/4, (HEIGHT - 1)/2 ) ;
+    *snake = new H::Snake( pos, INIT_SIZE, (WIDTH - 20)/8, (HEIGHT - 1)/4 ) ;
 }
 
 H::Snake * snake = NULL ;

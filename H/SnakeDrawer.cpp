@@ -4,7 +4,7 @@
 #include "Snake.h"
 
 #include <Arduboy.h>
-#define DRAW_FACTOR 2
+#define DRAW_FACTOR 4
 #define DRAW_FACTOR_2 2
 
 void
@@ -24,7 +24,7 @@ H::SnakeDrawer::Draw
     // Draw line segments
     while ( b != head )
     {
-        arduboy.fillRect(DRAW_FACTOR * a->value()->x , DRAW_FACTOR * a->value()->y ,
+        arduboy.fillRect(DRAW_FACTOR * a->value()->x - 1, DRAW_FACTOR * a->value()->y + 1,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
         a = b ;
@@ -34,16 +34,16 @@ H::SnakeDrawer::Draw
     // Draw apple
     if ( snake.hasApple() )
     {
-        arduboy.fillRect(DRAW_FACTOR * snake.apple().x , DRAW_FACTOR * snake.apple().y ,
+        arduboy.fillRect(DRAW_FACTOR * snake.apple().x -1, DRAW_FACTOR * snake.apple().y +1,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
     }
 
     // Draw walls
-    arduboy.drawFastHLine( 1, 1, snake.getWidth() * DRAW_FACTOR, WHITE ) ;
-    arduboy.drawFastHLine( 1, snake.getHeight()* DRAW_FACTOR, snake.getWidth()* DRAW_FACTOR, WHITE ) ;
+    arduboy.drawFastHLine( 1, 0, snake.getWidth() * DRAW_FACTOR, WHITE ) ;
+    arduboy.drawFastHLine( 1, snake.getHeight()* DRAW_FACTOR + 1, snake.getWidth()* DRAW_FACTOR, WHITE ) ;
 
-    arduboy.drawFastVLine( 1, 1, snake.getHeight()* DRAW_FACTOR, WHITE ) ;
+    arduboy.drawFastVLine( 1, 0, snake.getHeight()* DRAW_FACTOR +1, WHITE ) ;
     arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR, 1, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
 
     // Draw score

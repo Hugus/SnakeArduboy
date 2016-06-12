@@ -223,7 +223,7 @@ H::Snake::canMove
     switch ( direction )
     {
         case UP:
-            if ( m_bones.head()->value()->y <= DELTA_POS )
+            if ( m_bones.head()->value()->y <= 0 )
             {
                 return false ;
             }
