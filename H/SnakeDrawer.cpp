@@ -20,17 +20,18 @@ H::SnakeDrawer::Draw
     Node< Position > * head = bones.head() ;
 
     Node< Position > * a = head ;
-    Node< Position > * b = head->next() ;
 
     // Draw line segments
-    while ( b != head )
+    while ( a->next() != head )
     {
         arduboy.fillRect(DRAW_FACTOR * a->value()->x - 1, DRAW_FACTOR * a->value()->y + 1,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
-        a = b ;
-        b = b->next() ;
+        a = a->next() ;
     }
+        arduboy.fillRect(DRAW_FACTOR * a->value()->x - 1, DRAW_FACTOR * a->value()->y + 1,
+                         DRAW_FACTOR, DRAW_FACTOR,
+                         WHITE) ;
 
     // Draw apple
     if ( snake.hasApple() )
