@@ -16,7 +16,7 @@ H::Snake::Snake
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
-        m_bones.insertFront( &pos[size - i - 1] ) ;
+        m_bones.insertFront( &pos[i] ) ;
     }
 }
 
@@ -87,20 +87,10 @@ H::Snake::keepGoing
 (
 )
 {
-    switch( m_currentDirection )
+    // If movement is possible
+    if ( canMove( m_currentDirection ) )
     {
-        case UP:
-            up() ;
-            break;
-        case DOWN:
-            down() ;
-            break;
-        case RIGHT:
-            right();
-            break;
-        case LEFT:
-            left();
-            break;
+        return move( m_currentDirection ) ;
     }
 }
 
@@ -116,25 +106,7 @@ H::Snake::move
     Node< Position > * tail = m_bones.head()->previous() ;
 
     // Take last bone, put it at the front
-    switch ( direction )
-    {
-        case UP:
-            tail->value()->x = head->value()->x ;
-            tail->value()->y = head->value()->y - DELTA_POS ;
-            break;
-        case DOWN:
-            tail->value()->x = head->value()->x ;
-            tail->value()->y = head->value()->y + DELTA_POS ;
-            break;
-        case RIGHT:
-            tail->value()->x = head->value()->x + DELTA_POS ;
-            tail->value()->y = head->value()->y ;
-            break;
-        case LEFT:
-            tail->value()->x = head->value()->x - DELTA_POS ;
-            tail->value()->y = head->value()->y ;
-            break;
-    }
+    *tail->value() = *head->value() + getMove( direction ) ;
 
     // Change bones head
     m_bones.setHead( tail );
@@ -177,6 +149,61 @@ H::Snake::canMove
             }
             break;
     }
+    // Test bones
+    if ( hasBone( *m_bones.head()->value() + getMove( direction ) ) )
+    {
+        return false ;
+    }
     return true ;
+}
+
+//! Is there a snake bone at this position
+//! TODO, catastrophic complexity
+bool
+H::Snake::hasBone
+(
+    const Position & position
+)
+{
+    // Iterate over bones
+    Node< Position > * head = m_bones.head() ;
+    if ( *head->value() == position )
+    {
+        return true ;
+    }
+    Node< Position > * n = head->next() ;
+    while ( n != head )
+    {
+        if ( *n->value() == position )
+        {
+            return true ;
+        }
+        n = n->next() ;
+    }
+    return false ;
+}
+
+//! Get movement
+H::Position
+H::Snake::getMove
+(
+    const Direction direction
+)
+{
+    switch ( direction )
+    {
+        case UP:
+            return Position(0, - DELTA_POS) ;
+            break;
+        case DOWN:
+            return Position(0, DELTA_POS) ;
+            break;
+        case RIGHT:
+            return Position(DELTA_POS, 0) ;
+            break;
+        case LEFT:
+            return Position(-DELTA_POS, 0) ;
+            break;
+    }
 }
 

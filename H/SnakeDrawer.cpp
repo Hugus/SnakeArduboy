@@ -16,11 +16,6 @@ H::SnakeDrawer::Draw
     List< Position > & bones = snake.getBones() ;
     Node< Position > * head = bones.head() ;
 
-    if (  head == NULL )
-    {
-        return ;
-    }
-
     Node< Position > * a = head ;
     Node< Position > * b = head->next() ;
 

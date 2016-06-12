@@ -44,6 +44,12 @@ namespace H
         //! Movement rules
         bool canMove( const Direction direction ) ;
 
+        //! Is there a snake bone at this position
+        bool hasBone( const Position & position ) ;
+
+        //! Get movement
+        Position getMove( const Direction direction ) ;
+
         private:
         //! Snake bones
         List< Position > m_bones ;

@@ -9,7 +9,7 @@
 
 Arduboy arduboy;
 
-#define FRAMES_PER_SECOND 30   // The update and refresh speed
+#define FRAMES_PER_SECOND 20   // The update and refresh speed
 
 // Sounds
 const byte PROGMEM bing [] = {
@@ -21,7 +21,7 @@ const byte PROGMEM flap [] = {
 const byte PROGMEM hit [] = {
 0x90,60, 0,31, 0x80, 0x90,61, 0,31, 0x80, 0x90,62, 0,31, 0x80, 0xf0};
 
-#define INIT_SIZE 5
+#define INIT_SIZE 30
 H::Position * pos = new H::Position[INIT_SIZE]() ;
 H::Snake * snake = new H::Snake( pos, INIT_SIZE, WIDTH, HEIGHT ) ;
 

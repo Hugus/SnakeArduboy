@@ -21,6 +21,10 @@ namespace H
         Coord x ;
         Coord y ;
     } ;
+
+    Position operator + ( const Position & left, const Position & right ) ;
+
+    bool operator == ( const Position & left, const Position & right ) ;
 }
 
 #endif
