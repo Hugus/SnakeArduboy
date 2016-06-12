@@ -36,7 +36,7 @@ H::Snake::up
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->y <= 0 )
+    if ( m_bones.head()->value()->y <= DELTA_POS )
     {
         return false ;
     }
@@ -50,7 +50,7 @@ H::Snake::down
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->y >= m_height )
+if ( m_bones.head()->value()->y >= m_height - DELTA_POS )
     {
         return false ;
     }
@@ -64,7 +64,7 @@ H::Snake::right
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->x >= m_width )
+    if ( m_bones.head()->value()->x >= m_width - DELTA_POS )
     {
         return false ;
     }
@@ -78,7 +78,7 @@ H::Snake::left
 )
 {
     // If movement is possible
-    if ( m_bones.head()->value()->x <= 0 )
+    if ( m_bones.head()->value()->x <= DELTA_POS )
     {
         return false ;
     }
