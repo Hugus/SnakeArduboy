@@ -162,7 +162,7 @@ void loop() {
     }
     else
     {
-        if ( aPressed() || bPressed() )
+        if ( aPressed() )
         {
             // Reset
             delete snake ;
