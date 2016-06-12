@@ -11,7 +11,7 @@ Arduboy arduboy;
 
 #define FRAMES_PER_SECOND 10   // The update and refresh speed
 #define INIT_SIZE 5
-#define APPLE_PERIOD 100 // Number of frames between apple spawns
+#define APPLE_PERIOD 50 // Number of frames between apple spawns
 
 // Sounds
 const byte PROGMEM bing [] = {
