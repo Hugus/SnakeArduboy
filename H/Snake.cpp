@@ -12,6 +12,7 @@ H::Snake::Snake
 )
 : m_width( width )
 , m_height( height )
+, m_currentDirection( RIGHT )
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
@@ -84,12 +85,37 @@ H::Snake::left
     return move( LEFT ) ;
 }
 
+//! Continue moving
+bool
+H::Snake::keepGoing
+(
+)
+{
+    switch( m_currentDirection )
+    {
+        case UP:
+            up() ;
+            break;
+        case DOWN:
+            down() ;
+            break;
+        case RIGHT:
+            right();
+            break;
+        case LEFT:
+            left();
+            break;
+    }
+}
+
 bool
 H::Snake::move
 (
     const Direction direction
 )
 {
+    m_currentDirection = direction ;
+
     Node< Position > * head = m_bones.head() ;
     Node< Position > * tail = m_bones.head()->previous() ;
 

@@ -34,6 +34,8 @@ namespace H
         bool right() ;
         //! Snake movement
         bool left() ;
+        //! Continue moving
+        bool keepGoing() ;
 
         private:
         bool move( const Direction direction ) ;
@@ -47,6 +49,9 @@ namespace H
 
         //! Space height
         unsigned int m_height ;
+
+        //! Current direction
+        Direction m_currentDirection ;
     } ;
 }
 #endif

@@ -21,9 +21,9 @@ const byte PROGMEM flap [] = {
 const byte PROGMEM hit [] = {
 0x90,60, 0,31, 0x80, 0x90,61, 0,31, 0x80, 0x90,62, 0,31, 0x80, 0xf0};
 
-
-H::Position * pos = new H::Position[3]() ;
-H::Snake * snake = new H::Snake( pos, 3, WIDTH, HEIGHT ) ;
+#define INIT_SIZE 5
+H::Position * pos = new H::Position[INIT_SIZE]() ;
+H::Snake * snake = new H::Snake( pos, INIT_SIZE, WIDTH, HEIGHT ) ;
 
 void setup() {
     arduboy.begin();
@@ -37,16 +37,14 @@ void setup() {
 
     while (!arduboy.buttonsState()) { } // Wait for any key press
     debounceButtons();
-    playSound(bing);
 
 
     // Create snake
-    pos[0].x = 5 ;
-    pos[0].y = HEIGHT / 2 ;
-    pos[1].x = 6 ;
-    pos[1].y = HEIGHT / 2 ;
-    pos[2].x = 7 ;
-    pos[2].y = HEIGHT / 2 ;
+    for ( unsigned int i = 0 ; i < INIT_SIZE ; ++i )
+    {
+        pos[i].x = 5 + i;
+        pos[i].y = HEIGHT / 2 ;
+    }
 
     arduboy.initRandomSeed();
     Serial.println("Init end");
@@ -65,25 +63,25 @@ void loop() {
     {
         Serial.println("UP");
         canMove = snake->up() ;
-        debounceButtons();
     }
-    if ( downPressed() )
+    else if ( downPressed() )
     {
         Serial.println("DOWN");
         canMove = snake->down() ;
-        debounceButtons();
     }
-    if ( rightPressed() )
+    else if ( rightPressed() )
     {
         Serial.println("RIGHT");
         canMove = snake->right() ;
-        debounceButtons();
     }
-    if ( leftPressed() )
+    else if ( leftPressed() )
     {
         Serial.println("LEFT");
         canMove = snake->left() ;
-        debounceButtons();
+    }
+    else
+    {
+        canMove = snake->keepGoing() ;
     }
 
     // Draw snake
