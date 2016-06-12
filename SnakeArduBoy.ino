@@ -56,7 +56,7 @@ void init( H::Snake ** snake )
     // Create initial positions
     for ( unsigned int i = 0 ; i < INIT_SIZE ; ++i )
     {
-        pos[i]= new H::Position( 5 + i, (HEIGHT - 1)/8 ) ;
+        pos[i]= new H::Position( i, (HEIGHT - 1)/8 ) ;
     }
 
     *snake = new H::Snake( pos, INIT_SIZE, (WIDTH - 20)/8, (HEIGHT - 1)/4 ) ;

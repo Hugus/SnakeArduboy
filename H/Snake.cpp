@@ -192,8 +192,6 @@ H::Snake::move
     Node< Position > * head = m_bones.head() ;
     Node< Position > * tail = m_bones.head()->previous() ;
 
-    Position oldTail = *tail->value() ;
-
     // Take last bone, put it at the front
     *tail->value() = *head->value() + getMove( direction ) ;
 
@@ -206,7 +204,7 @@ H::Snake::move
         // Hide apple
         hideApple() ;
         // grow
-        grow( oldTail ) ;
+        grow( *m_bones.head()->previous()->value() ) ;
     }
 
     return true ;
