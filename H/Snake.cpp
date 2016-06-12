@@ -30,18 +30,14 @@ H::Snake::~Snake
 {
     // Delete positions and nodes
     Node< Position > * n = m_bones.head() ;
-    Node< Position > * next = m_bones.head() ;
     Node< Position > * head = m_bones.head() ;
     while ( n->next() !=  head )
     {
-        next = n->next() ;
         delete n->value() ;
-        delete n ;
-        n = next ;
+        n = n->next() ;
     }
     // Delete tail
     delete n->value() ;
-    delete n ;
 }
 
 

@@ -54,6 +54,9 @@ namespace H
         : m_head( NULL )
         {}
 
+        //! Destructor
+        ~List() ;
+
         //! Set list head
         void setHead( Node< NodeType > * head ) ;
         //! Get head ;)
@@ -126,6 +129,25 @@ namespace H
     // -------------------------------------------------------------------------
     // List implementation
     // -------------------------------------------------------------------------
+
+    //! Destructor
+    template< typename NodeType >
+    List< NodeType >::~List
+    (
+    )
+    {
+        // Delete nodes
+        Node< NodeType > * n = m_head ;
+        Node< NodeType > * next = m_head ;
+        while ( n->next() !=  m_head )
+        {
+            next = n->next() ;
+            delete n ;
+            n = next ;
+        }
+        // Delete tail
+        delete n ;
+    }
 
     //! Set list head
     template< typename NodeType >
