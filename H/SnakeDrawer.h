@@ -13,7 +13,7 @@ namespace H
     class SnakeDrawer
     {
         public:
-        static void Draw( Snake & snake, Arduboy & arduboy ) ;
+        static void Draw( Snake & snake, Arduboy & arduboy, unsigned int score ) ;
     } ;
 }
 #endif

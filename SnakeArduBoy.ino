@@ -124,9 +124,6 @@ void loop() {
         frames = 0 ;
     }
 
-    // Draw snake
-    H::SnakeDrawer::Draw( *snake, arduboy ) ;
-
     if ( ! canMove )
     {
         if ( gameState != GAME_OVER )
@@ -151,6 +148,9 @@ void loop() {
             frames = 0 ;
         }
     }
+
+    // Draw snake
+    H::SnakeDrawer::Draw( *snake, arduboy, score ) ;
 
     // Finally draw this thang
     arduboy.display();

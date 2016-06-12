@@ -11,7 +11,8 @@ void
 H::SnakeDrawer::Draw
 (
     Snake & snake,
-    Arduboy & arduboy
+    Arduboy & arduboy,
+    unsigned int score
 )
 {
     List< Position > & bones = snake.getBones() ;
@@ -44,4 +45,11 @@ H::SnakeDrawer::Draw
 
     arduboy.drawFastVLine( 1, 1, snake.getHeight()* DRAW_FACTOR, WHITE ) ;
     arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR, 1, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
+
+    // Draw score
+    arduboy.setCursor( 65, 10 ) ;
+    arduboy.print("Score : ") ;
+    arduboy.setCursor( 110, 10 ) ;
+    arduboy.print(score) ;
+
 }
