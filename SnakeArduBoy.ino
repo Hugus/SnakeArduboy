@@ -4,6 +4,7 @@
 
 #include <Arduboy.h>
 #include "H/Snake.h"
+#include "H/SnakeDrawer.h"
 #include "H/Position.h"
 
 Arduboy arduboy;
@@ -21,6 +22,9 @@ const byte PROGMEM hit [] = {
 0x90,60, 0,31, 0x80, 0x90,61, 0,31, 0x80, 0x90,62, 0,31, 0x80, 0xf0};
 
 
+H::Position * pos = new H::Position[3]() ;
+H::Snake * snake = new H::Snake( pos, 3, WIDTH, HEIGHT ) ;
+
 void setup() {
     arduboy.begin();
     arduboy.setFrameRate(FRAMES_PER_SECOND);
@@ -33,19 +37,19 @@ void setup() {
 
     while (!arduboy.buttonsState()) { } // Wait for any key press
     debounceButtons();
+    playSound(bing);
 
-    H::Position * pos = new H::Position[3]() ;
 
     // Create snake
     pos[0].x = 5 ;
     pos[0].y = HEIGHT / 2 ;
-    pos[1].x = 10 ;
+    pos[1].x = 6 ;
     pos[1].y = HEIGHT / 2 ;
-    pos[2].x = 15 ;
+    pos[2].x = 7 ;
     pos[2].y = HEIGHT / 2 ;
-    H::Snake * snake = new H::Snake( pos, 3 ) ;
 
     arduboy.initRandomSeed();
+    Serial.println("Init end");
 }
 
 
@@ -56,7 +60,34 @@ void loop() {
     // Clear screen
     arduboy.clear();
 
+    bool canMove = false ;
+    if ( upPressed() )
+    {
+        Serial.println("UP");
+        canMove = snake->up() ;
+        debounceButtons();
+    }
+    if ( downPressed() )
+    {
+        Serial.println("DOWN");
+        canMove = snake->down() ;
+        debounceButtons();
+    }
+    if ( rightPressed() )
+    {
+        Serial.println("RIGHT");
+        canMove = snake->right() ;
+        debounceButtons();
+    }
+    if ( leftPressed() )
+    {
+        Serial.println("LEFT");
+        canMove = snake->left() ;
+        debounceButtons();
+    }
+
     // Draw snake
+    H::SnakeDrawer::Draw( *snake, arduboy ) ;
 
     // Finally draw this thang
     arduboy.display();

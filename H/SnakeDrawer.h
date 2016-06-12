@@ -12,7 +12,8 @@ namespace H
     //! Snake drawing facilities
     class SnakeDrawer
     {
-        void Draw( Snake & snake, Arduboy & arduboy ) ;
+        public:
+        static void Draw( Snake & snake, Arduboy & arduboy ) ;
     } ;
 }
 #endif

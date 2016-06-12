@@ -50,7 +50,9 @@ namespace H
     class List
     {
         public:
-        List() {}
+        List()
+        : m_head( NULL )
+        {}
 
         //! Set list head
         void setHead( Node< NodeType > * head ) ;

@@ -12,8 +12,14 @@ H::SnakeDrawer::Draw
     Arduboy & arduboy
 )
 {
+    //-Serial.println("Draw");
     List< Position > & bones = snake.getBones() ;
     Node< Position > * head = bones.head() ;
+
+    if (  head == NULL )
+    {
+        return ;
+    }
 
     Node< Position > * a = head ;
     Node< Position > * b = head->next() ;
@@ -21,6 +27,14 @@ H::SnakeDrawer::Draw
     // Draw line segments
     while ( b != head )
     {
+        //-Serial.println("   bone");
+        //-Serial.print(a->value()->x);
+        //-Serial.print(", ");
+        //-Serial.print(a->value()->y);
+        //-Serial.print(" -> ");
+        //-Serial.print(b->value()->x);
+        //-Serial.print(", ");
+        //-Serial.println(b->value()->y);
         arduboy.drawLine(a->value()->x, a->value()->y,
                          b->value()->x, b->value()->y,
                          WHITE) ;
