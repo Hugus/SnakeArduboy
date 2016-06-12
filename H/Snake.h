@@ -23,6 +23,11 @@ namespace H
         //! @param[in] size snake size at beginning
         Snake(Position * pos, unsigned int size, unsigned int width, unsigned int height) ;
 
+        //! Get space dimension
+        unsigned int getWidth() ;
+        //! Get space dimension
+        unsigned int getHeight() ;
+
         //! Get snake bones
         List< Position > & getBones() ;
 

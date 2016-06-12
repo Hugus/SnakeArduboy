@@ -20,6 +20,25 @@ H::Snake::Snake
     }
 }
 
+
+//! Get space dimension
+unsigned int
+H::Snake::getWidth
+(
+)
+{
+    return m_width ;
+}
+
+//! Get space dimension
+unsigned int
+H::Snake::getHeight
+(
+)
+{
+    return m_height ;
+}
+
 //! Get snake bones
 H::List< H::Position > &
 H::Snake::getBones

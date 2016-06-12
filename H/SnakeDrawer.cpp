@@ -37,5 +37,10 @@ H::SnakeDrawer::Draw
         b = b->next() ;
     }
 
+    // Draw walls
+    arduboy.drawFastHLine( 0, 0, snake.getWidth(), WHITE ) ;
+    arduboy.drawFastHLine( 0, snake.getHeight(), snake.getWidth(), WHITE ) ;
 
+    arduboy.drawFastVLine( 0, 0, snake.getHeight(), WHITE ) ;
+    arduboy.drawFastVLine( snake.getWidth(), 0, snake.getHeight() + 1, WHITE ) ;
 }

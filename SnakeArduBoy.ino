@@ -23,7 +23,7 @@ const byte PROGMEM hit [] = {
 
 #define INIT_SIZE 30
 H::Position * pos = new H::Position[INIT_SIZE]() ;
-H::Snake * snake = new H::Snake( pos, INIT_SIZE, WIDTH, HEIGHT ) ;
+H::Snake * snake = new H::Snake( pos, INIT_SIZE, WIDTH - 20, HEIGHT - 1 ) ;
 
 void setup() {
     arduboy.begin();
