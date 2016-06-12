@@ -83,6 +83,7 @@ H::Snake::up
     {
         return move( UP ) ;
     }
+    return false ;
 }
 
 //! Snake movement
@@ -96,6 +97,7 @@ H::Snake::down
     {
         return move( DOWN ) ;
     }
+    return false ;
 }
 
 //! Snake movement
@@ -109,6 +111,7 @@ H::Snake::right
     {
         return move( RIGHT ) ;
     }
+    return false ;
 }
 
 //! Snake movement
@@ -122,6 +125,7 @@ H::Snake::left
     {
         return move( LEFT ) ;
     }
+    return false ;
 }
 
 //! Continue moving
@@ -135,6 +139,7 @@ H::Snake::keepGoing
     {
         return move( m_currentDirection ) ;
     }
+    return false ;
 }
 
 //! Hide apple
