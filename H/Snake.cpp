@@ -154,11 +154,22 @@ H::Snake::move
     Node< Position > * head = m_bones.head() ;
     Node< Position > * tail = m_bones.head()->previous() ;
 
+    Position oldTail = *tail->value() ;
+
     // Take last bone, put it at the front
     *tail->value() = *head->value() + getMove( direction ) ;
 
     // Change bones head
     m_bones.setHead( tail );
+
+    // If we just ate an apple, grow
+    if ( m_isApple && ( *m_bones.head()->value() == m_apple ) )
+    {
+        // Hide apple
+        hideApple() ;
+        // grow
+        grow( oldTail ) ;
+    }
 
     return true ;
 }
@@ -254,5 +265,16 @@ H::Snake::getMove
             return Position(-DELTA_POS, 0) ;
             break;
     }
+}
+
+//! Grow
+void
+H::Snake::grow
+(
+    const Position & oldTail
+)
+{
+    // Add a queue item
+    m_bones.insertBack( new Position(oldTail.x, oldTail.y) ) ;
 }
 

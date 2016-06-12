@@ -65,6 +65,9 @@ namespace H
         //! Get movement
         Position getMove( const Direction direction ) ;
 
+        //! Grow
+        void grow( const Position & oldTail ) ;
+
         private:
         //! Snake bones
         List< Position > m_bones ;

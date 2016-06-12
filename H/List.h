@@ -183,7 +183,22 @@ namespace H
         NodeType * element
     )
     {
-        throw "Todo implement" ;
+        // Create node
+        Node< NodeType > * n = new Node< NodeType >( element ) ;
+        if ( m_head != NULL )
+        {
+            n->setNext( m_head ) ;
+            n->setPrevious( m_head->previous() ) ;
+            m_head->previous()->setNext( n ) ;
+            m_head->setPrevious( n ) ;
+        }
+        else
+        {
+            // Empty list
+            m_head = n ;
+            m_head->setPrevious( m_head ) ;
+            m_head->setNext( m_head ) ;
+        }
     }
 
     //! Get first element
