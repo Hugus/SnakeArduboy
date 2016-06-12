@@ -12,7 +12,8 @@ H::SnakeDrawer::Draw
 (
     Snake & snake,
     Arduboy & arduboy,
-    unsigned int score
+    unsigned int score,
+    unsigned int maxScore
 )
 {
     List< Position > & bones = snake.getBones() ;
@@ -51,5 +52,9 @@ H::SnakeDrawer::Draw
     arduboy.print("Score : ") ;
     arduboy.setCursor( 110, 10 ) ;
     arduboy.print(score) ;
+    arduboy.setCursor( 65, 20 ) ;
+    arduboy.print("Max   : ") ;
+    arduboy.setCursor( 110, 20 ) ;
+    arduboy.print(maxScore) ;
 
 }

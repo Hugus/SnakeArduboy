@@ -67,6 +67,7 @@ H::Snake * snake = NULL ;
 unsigned short frames = 0 ;
 GameState gameState = INIT ;
 unsigned int score = 0 ;
+unsigned int maxScore = 0 ;
 
 void setup() {
     arduboy.begin();
@@ -130,6 +131,10 @@ void loop() {
         {
             playSound(point);
             ++score;
+            if ( maxScore < score )
+            {
+                maxScore = score ;
+            }
             frames = 0 ;
         }
 
@@ -167,8 +172,18 @@ void loop() {
             frames = 0 ;
         }
     }
+    if ( bPressed() )
+    {
+        if (arduboy.audio.enabled()) {    // If sound is enabled
+            stopSound();                    // Stop anything that's playing
+            arduboy.audio.off();            // Mute sounds
+        } else {
+            arduboy.audio.on();             // Enable sound
+            playSound(bing);                // Play a sound to indicate sound has been turned on
+        }
+    }
     // Draw snake
-    H::SnakeDrawer::Draw( *snake, arduboy, score ) ;
+    H::SnakeDrawer::Draw( *snake, arduboy, score, maxScore ) ;
 
     // Finally draw this thang
     arduboy.display();
