@@ -27,9 +27,9 @@ namespace H
         _T * value() { return m_value ; }
 
         //! Get next node
-        Node< _T > * next() ;
+        Node< _T > * next() const ;
         //! Get previous node
-        Node< _T > * previous() ;
+        Node< _T > * previous() const ;
 
         //! Set next node
         void setNext( Node< _T > * n ) ;
@@ -83,6 +83,7 @@ namespace H
     Node< _T >::next
     (
     )
+    const
     {
         return m_next ;
     }
@@ -93,6 +94,7 @@ namespace H
     Node< _T >::previous
     (
     )
+    const
     {
         return m_previous ;
     }
@@ -152,12 +154,23 @@ namespace H
         NodeType * element
     )
     {
+        // Create node
         Node< NodeType > * n = new Node< NodeType >( element ) ;
-        n->setNext( m_head ) ;
-        n->setPrevious( m_head->previous() ) ;
-        m_head->previous()->setNext( n ) ;
-        m_head->setPrevious( n ) ;
-        m_head = n ;
+        if ( m_head != NULL )
+        {
+            n->setNext( m_head ) ;
+            n->setPrevious( m_head->previous() ) ;
+            m_head->previous()->setNext( n ) ;
+            m_head->setPrevious( n ) ;
+            m_head = n ;
+        }
+        else
+        {
+            // Empty list
+            m_head = n ;
+            m_head->setPrevious( m_head ) ;
+            m_head->setNext( m_head ) ;
+        }
     }
 
     //! Insert at end of list
