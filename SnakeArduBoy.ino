@@ -49,8 +49,21 @@ H::Snake::showApple
 }
 
 
-H::Position * pos = new H::Position[INIT_SIZE]() ;
-H::Snake * snake = new H::Snake( pos, INIT_SIZE, (WIDTH - 20)/4, (HEIGHT - 1)/2 ) ;
+void init( H::Snake ** snake )
+{
+    H::Position * pos[INIT_SIZE] ;
+
+    // Create initial positions
+    for ( unsigned int i = 0 ; i < INIT_SIZE ; ++i )
+    {
+        pos[i]= new H::Position( 5 + i, (HEIGHT - 1)/4 ) ;
+    }
+
+    *snake = new H::Snake( pos, INIT_SIZE, (WIDTH - 20)/4, (HEIGHT - 1)/2 ) ;
+}
+
+H::Snake * snake = NULL ;
+
 unsigned short frames = 0 ;
 GameState gameState = INIT ;
 unsigned int score = 0 ;
@@ -68,13 +81,7 @@ void setup() {
     while (!arduboy.buttonsState()) { } // Wait for any key press
     debounceButtons();
 
-
-    // Create snake
-    for ( unsigned int i = 0 ; i < INIT_SIZE ; ++i )
-    {
-        pos[i].x = 5 + i;
-        pos[i].y = snake->getHeight() / 2 ;
-    }
+    init( &snake ) ;
 
     arduboy.initRandomSeed();
 
@@ -93,62 +100,73 @@ void loop() {
     arduboy.clear();
 
     bool canMove = false ;
-    if ( upPressed() )
+    if ( gameState != GAME_OVER )
     {
-        Serial.println("UP");
-        canMove = snake->up() ;
-    }
-    else if ( downPressed() )
-    {
-        Serial.println("DOWN");
-        canMove = snake->down() ;
-    }
-    else if ( rightPressed() )
-    {
-        Serial.println("RIGHT");
-        canMove = snake->right() ;
-    }
-    else if ( leftPressed() )
-    {
-        Serial.println("LEFT");
-        canMove = snake->left() ;
-    }
-    else
-    {
-        canMove = snake->keepGoing() ;
-    }
-    if ( snake->hasGrown() )
-    {
-        playSound(point);
-        ++score;
-        frames = 0 ;
-    }
+        if ( upPressed() )
+        {
+            Serial.println("UP");
+            canMove = snake->up() ;
+        }
+        else if ( downPressed() )
+        {
+            Serial.println("DOWN");
+            canMove = snake->down() ;
+        }
+        else if ( rightPressed() )
+        {
+            Serial.println("RIGHT");
+            canMove = snake->right() ;
+        }
+        else if ( leftPressed() )
+        {
+            Serial.println("LEFT");
+            canMove = snake->left() ;
+        }
+        else
+        {
+            canMove = snake->keepGoing() ;
+        }
+        if ( snake->hasGrown() )
+        {
+            playSound(point);
+            ++score;
+            frames = 0 ;
+        }
 
-    if ( ! canMove )
-    {
-        if ( gameState != GAME_OVER )
+        if ( ! canMove )
         {
             playSound( flap ) ;
             gameState = GAME_OVER ;
         }
+        else
+        {
+            if ( frames == APPLE_PERIOD - 5 )
+            {
+                snake->hideApple() ;
+            }
+            else if ( frames == 1 )
+            {
+                // Spawn an apple
+                snake->showApple() ;
+            }
+            else if ( frames == APPLE_PERIOD )
+            {
+                frames = 0 ;
+            }
+        }
     }
     else
     {
-        if ( frames == APPLE_PERIOD - 5 )
+        if ( aPressed() || bPressed() )
         {
-            snake->hideApple() ;
-        }
-        else if ( frames == 1 )
-        {
-            // Spawn an apple
-            snake->showApple() ;
-        }
-        else if ( frames == APPLE_PERIOD )
-        {
+            // Reset
+            delete snake ;
+            score = 0 ;
+            init( &snake ) ;
+            gameState = RUNNING ;
             frames = 0 ;
         }
     }
-
     // Draw snake
     H::SnakeDrawer::Draw( *snake, arduboy, score ) ;
 

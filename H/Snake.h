@@ -21,7 +21,10 @@ namespace H
         //! Constructor
         //! @param[in] pos position of bones at beginning
         //! @param[in] size snake size at beginning
-        Snake(Position * pos, unsigned int size, unsigned int width, unsigned int height) ;
+        Snake(Position * pos[], unsigned int size, unsigned int width, unsigned int height) ;
+
+        //! Destructor
+        ~Snake() ;
 
         //! Get space dimension
         unsigned int getWidth() ;

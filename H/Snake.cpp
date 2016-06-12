@@ -6,7 +6,7 @@
 
 H::Snake::Snake
 (
-    Position * pos,
+    Position * pos[],
     unsigned int size,
     unsigned int width,
     unsigned int height
@@ -19,8 +19,29 @@ H::Snake::Snake
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
-        m_bones.insertFront( &pos[i] ) ;
+        m_bones.insertFront( pos[i] ) ;
     }
+}
+
+//! Destructor
+H::Snake::~Snake
+(
+)
+{
+    // Delete positions and nodes
+    Node< Position > * n = m_bones.head() ;
+    Node< Position > * next = m_bones.head() ;
+    Node< Position > * head = m_bones.head() ;
+    while ( n->next() !=  head )
+    {
+        next = n->next() ;
+        delete n->value() ;
+        delete n ;
+        n = next ;
+    }
+    // Delete tail
+    delete n->value() ;
+    delete n ;
 }
 
 
