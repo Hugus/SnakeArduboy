@@ -52,6 +52,9 @@ namespace H
         //! Where is apple
         const Position & apple() const ;
 
+        //! Has grown
+        bool hasGrown() ;
+
         private:
         //! Snake movement
         bool move( const Direction direction ) ;
@@ -85,6 +88,9 @@ namespace H
 
         //! Current direction
         Direction m_currentDirection ;
+
+        //! Has grown
+        bool m_hasGrown ;
     } ;
 }
 #endif

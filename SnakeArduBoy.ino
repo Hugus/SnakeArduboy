@@ -37,12 +37,12 @@ H::Snake::showApple
 )
 {
     // Look for an empty spot
-    m_apple.x = random(0, m_width) ;
-    m_apple.y = random(0, m_height) ;
+    m_apple.x = random(1, m_width) ;
+    m_apple.y = random(1, m_height) ;
     while( hasBone( m_apple ) )
     {
-        m_apple.x = random(0, m_width) ;
-        m_apple.y = random(0, m_height) ;
+        m_apple.x = random(1, m_width) ;
+        m_apple.y = random(1, m_height) ;
     }
     // Spawn an apple
     m_isApple = true ;
@@ -50,9 +50,10 @@ H::Snake::showApple
 
 
 H::Position * pos = new H::Position[INIT_SIZE]() ;
-H::Snake * snake = new H::Snake( pos, INIT_SIZE, WIDTH - 20, HEIGHT - 1 ) ;
+H::Snake * snake = new H::Snake( pos, INIT_SIZE, (WIDTH - 20)/4, (HEIGHT - 1)/2 ) ;
 unsigned short frames = 0 ;
 GameState gameState = INIT ;
+unsigned int score = 0 ;
 
 void setup() {
     arduboy.begin();
@@ -72,7 +73,7 @@ void setup() {
     for ( unsigned int i = 0 ; i < INIT_SIZE ; ++i )
     {
         pos[i].x = 5 + i;
-        pos[i].y = HEIGHT / 2 ;
+        pos[i].y = snake->getHeight() / 2 ;
     }
 
     arduboy.initRandomSeed();
@@ -115,6 +116,12 @@ void loop() {
     else
     {
         canMove = snake->keepGoing() ;
+    }
+    if ( snake->hasGrown() )
+    {
+        playSound(point);
+        ++score;
+        frames = 0 ;
     }
 
     // Draw snake

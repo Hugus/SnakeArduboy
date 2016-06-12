@@ -2,6 +2,7 @@
 
 #define SPEED 1
 #define DELTA_POS 1
+#define MARGIN 1 // Walls imply a margin
 
 H::Snake::Snake
 (
@@ -14,6 +15,7 @@ H::Snake::Snake
 , m_width( width )
 , m_height( height )
 , m_currentDirection( RIGHT )
+, m_hasGrown( false )
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
@@ -141,6 +143,21 @@ H::Snake::apple
 const
 {
     return m_apple ;
+}
+
+
+//! Has grown
+bool
+H::Snake::hasGrown
+(
+)
+{
+    if ( m_hasGrown )
+    {
+        m_hasGrown = false ;
+        return true ;
+    }
+    return false ;
 }
 
 bool
@@ -276,5 +293,6 @@ H::Snake::grow
 {
     // Add a queue item
     m_bones.insertBack( new Position(oldTail.x, oldTail.y) ) ;
+    m_hasGrown = true ;
 }
 

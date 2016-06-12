@@ -4,6 +4,8 @@
 #include "Snake.h"
 
 #include <Arduboy.h>
+#define DRAW_FACTOR 2
+#define DRAW_FACTOR_2 2
 
 void
 H::SnakeDrawer::Draw
@@ -12,7 +14,6 @@ H::SnakeDrawer::Draw
     Arduboy & arduboy
 )
 {
-    //-Serial.println("Draw");
     List< Position > & bones = snake.getBones() ;
     Node< Position > * head = bones.head() ;
 
@@ -22,16 +23,8 @@ H::SnakeDrawer::Draw
     // Draw line segments
     while ( b != head )
     {
-        //-Serial.println("   bone");
-        //-Serial.print(a->value()->x);
-        //-Serial.print(", ");
-        //-Serial.print(a->value()->y);
-        //-Serial.print(" -> ");
-        //-Serial.print(b->value()->x);
-        //-Serial.print(", ");
-        //-Serial.println(b->value()->y);
-        arduboy.drawLine(a->value()->x, a->value()->y,
-                         b->value()->x, b->value()->y,
+        arduboy.fillRect(DRAW_FACTOR * a->value()->x , DRAW_FACTOR * a->value()->y ,
+                         DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
         a = b ;
         b = b->next() ;
@@ -40,15 +33,15 @@ H::SnakeDrawer::Draw
     // Draw apple
     if ( snake.hasApple() )
     {
-        arduboy.drawPixel( snake.apple().x,
-                           snake.apple().y,
-                           WHITE ) ;
+        arduboy.fillRect(DRAW_FACTOR * snake.apple().x , DRAW_FACTOR * snake.apple().y ,
+                         DRAW_FACTOR, DRAW_FACTOR,
+                         WHITE) ;
     }
 
     // Draw walls
-    arduboy.drawFastHLine( 0, 0, snake.getWidth(), WHITE ) ;
-    arduboy.drawFastHLine( 0, snake.getHeight(), snake.getWidth(), WHITE ) ;
+    arduboy.drawFastHLine( 1, 1, snake.getWidth() * DRAW_FACTOR, WHITE ) ;
+    arduboy.drawFastHLine( 1, snake.getHeight()* DRAW_FACTOR, snake.getWidth()* DRAW_FACTOR, WHITE ) ;
 
-    arduboy.drawFastVLine( 0, 0, snake.getHeight(), WHITE ) ;
-    arduboy.drawFastVLine( snake.getWidth(), 0, snake.getHeight() + 1, WHITE ) ;
+    arduboy.drawFastVLine( 1, 1, snake.getHeight()* DRAW_FACTOR, WHITE ) ;
+    arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR, 1, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
 }
