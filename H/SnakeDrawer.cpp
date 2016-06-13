@@ -4,8 +4,10 @@
 #include "Snake.h"
 
 #include <Arduboy.h>
+
 #define DRAW_FACTOR 4
 #define DRAW_FACTOR_2 2
+#define DRAW_MARGIN 1
 
 void
 H::SnakeDrawer::Draw
@@ -24,29 +26,29 @@ H::SnakeDrawer::Draw
     // Draw line segments
     while ( a->next() != head )
     {
-        arduboy.fillRect(DRAW_FACTOR * a->value()->x - 1, DRAW_FACTOR * a->value()->y + 1,
+        arduboy.fillRect(DRAW_FACTOR * a->value()->x - DRAW_MARGIN, DRAW_FACTOR * a->value()->y + DRAW_MARGIN,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
         a = a->next() ;
     }
-        arduboy.fillRect(DRAW_FACTOR * a->value()->x - 1, DRAW_FACTOR * a->value()->y + 1,
+        arduboy.fillRect(DRAW_FACTOR * a->value()->x - DRAW_MARGIN, DRAW_FACTOR * a->value()->y + DRAW_MARGIN,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
 
     // Draw apple
     if ( snake.hasApple() )
     {
-        arduboy.fillRect(DRAW_FACTOR * snake.apple().x -1, DRAW_FACTOR * snake.apple().y +1,
+        arduboy.fillRect(DRAW_FACTOR * snake.apple().x -DRAW_MARGIN, DRAW_FACTOR * snake.apple().y +DRAW_MARGIN,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
     }
 
     // Draw walls
-    arduboy.drawFastHLine( 2, 0, snake.getWidth() * DRAW_FACTOR - 2, WHITE ) ;
-    arduboy.drawFastHLine( 2, snake.getHeight()* DRAW_FACTOR + 1, snake.getWidth()* DRAW_FACTOR - 2, WHITE ) ;
+    arduboy.drawFastHLine( 2, 0, snake.getWidth() * DRAW_FACTOR - 2 * DRAW_MARGIN, WHITE ) ;
+    arduboy.drawFastHLine( 2, snake.getHeight()* DRAW_FACTOR + DRAW_MARGIN, snake.getWidth() * DRAW_FACTOR - 2 * DRAW_MARGIN, WHITE ) ;
 
-    arduboy.drawFastVLine( 2, 0, snake.getHeight()* DRAW_FACTOR +1, WHITE ) ;
-    arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR -1, 1, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
+    arduboy.drawFastVLine( 2, 0, snake.getHeight()* DRAW_FACTOR +DRAW_MARGIN, WHITE ) ;
+    arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR - DRAW_MARGIN, DRAW_MARGIN, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
 
     // Draw score
     arduboy.setCursor( 65, 10 ) ;
