@@ -19,7 +19,9 @@ All classes have been placed under the namespace _H_
 
 ##### H::Snake #####
 Model class for the game.
+
 A _Snake_ has a _List_ of bones (a bone is a 2D position), a width and height (in _model_ space).
+
 Its public methods are :
 - movement orders (returning true if movement is possible)
 - show/hide apple
@@ -27,6 +29,7 @@ Its public methods are :
 
 ##### H::List #####
 Custom implementation of a circular doubly linked list (where list head and tail are connected).
+
 List elements are _Nodes_. A node contains a pointer to a value (here a _Position_ of a bone) and pointers to the next and previous bones.
 
 ##### H::Position #####
