@@ -6,6 +6,7 @@
 #include "H/Snake.h"
 #include "H/SnakeDrawer.h"
 #include "H/Position.h"
+#include "assets.h"
 
 Arduboy arduboy ;
 
@@ -71,31 +72,48 @@ unsigned short frames = 0 ;
 GameState gameState = INIT ;
 unsigned int score = 0 ;
 unsigned int maxScore = 0 ;
+bool black = true ;
 
 void setup() {
     arduboy.begin() ;
     arduboy.setFrameRate( FRAMES_PER_SECOND ) ;
     playSound( bing ) ;
     delay( 1500 ) ;
-    arduboy.clear() ;
-    arduboy.setCursor( 18,55 ) ;
-    arduboy.print( "Press to start" ) ;
-    arduboy.display() ;
-
-    while ( !arduboy.buttonsState() ) { } // Wait for any key press
-    debounceButtons() ;
 
     init( &snake ) ;
-
-    arduboy.initRandomSeed() ;
-
-    gameState = RUNNING ;
 }
 
 
 void loop() {
     if ( !arduboy.nextFrame() )
         return ;
+
+    // Wait for any key press
+    if ( gameState == INIT )
+    {
+        arduboy.clear() ;
+        if ( black )
+        {
+            arduboy.drawBitmap(0,0,snake_black,128,64,WHITE);
+        }
+        else
+        {
+            arduboy.drawBitmap(0,0,snake_white,128,64,WHITE);
+        }
+        black = !black ;
+        Serial.println(black) ;
+        arduboy.display() ;
+        delay( 100 ) ;
+        if ( aPressed() )
+        {
+            gameState = RUNNING ;
+            arduboy.initRandomSeed() ;
+        }
+        else
+        {
+            return ;
+        }
+    }
 
     // Increment frame count
     ++frames ;
