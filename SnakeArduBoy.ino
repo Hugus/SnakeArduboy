@@ -182,9 +182,21 @@ void loop() {
                 frames = 0 ;
             }
         }
+
+        // Draw snake
+        H::SnakeDrawer::Draw( *snake, arduboy, score, maxScore ) ;
     }
     else
     {
+        // Draw game over bitmap
+        arduboy.drawBitmap(0,0,game_over,128,64,WHITE);
+
+        // Draw score
+        arduboy.setCursor( 5, 40 ) ;
+        arduboy.print("Score") ;
+        arduboy.setCursor( 5, 50 ) ;
+        arduboy.print(score) ;
+
         // In game over state, A button re-init game
         if ( aPressed() )
         {
@@ -200,9 +212,8 @@ void loop() {
     if ( bPressed() )
     {
         toggleSound() ;
+        debounceButtons() ;
     }
-    // Draw snake
-    H::SnakeDrawer::Draw( *snake, arduboy, score, maxScore ) ;
 
     // Display screen
     arduboy.display() ;
