@@ -16,9 +16,13 @@ H::Snake::Snake
 , m_height( height )
 , m_currentDirection( RIGHT )
 , m_hasGrown( false )
+, m_grid( width, height )
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
+        // Initialise node position grid
+        m_grid[*pos[i]] = true ;
+        // Insert bone
         m_bones.insertFront( pos[i] ) ;
     }
 }
@@ -193,8 +197,14 @@ H::Snake::move
     Node< Position > * head = m_bones.head() ;
     Node< Position > * tail = m_bones.head()->previous() ;
 
+    // Save old tail position
+    Position oldTail = *tail->value() ;
+
     // Take last bone, put it at the front
     *tail->value() = *head->value() + getMove( direction ) ;
+
+    // Update grid there is a bone at this new position
+    m_grid[*tail->value()] = true ;
 
     // Change bones head
     m_bones.setHead( tail );
@@ -206,6 +216,12 @@ H::Snake::move
         hideApple() ;
         // grow
         grow( *m_bones.head()->previous()->value() ) ;
+    }
+    // If there is no bone left at tail position
+    if ( !(*m_bones.head()->previous()->value() == oldTail) )
+    {
+        // Update grid (there is no more bone at tail position)
+        m_grid[oldTail] = false ;
     }
 
     return true ;
@@ -255,29 +271,14 @@ H::Snake::canMove
 }
 
 //! Is there a snake bone at this position
-//! TODO, catastrophic complexity
 bool
 H::Snake::hasBone
 (
     const Position & position
 )
+const
 {
-    // Iterate over bones
-    Node< Position > * head = m_bones.head() ;
-    if ( *head->value() == position )
-    {
-        return true ;
-    }
-    Node< Position > * n = head->next() ;
-    while ( n != head )
-    {
-        if ( *n->value() == position )
-        {
-            return true ;
-        }
-        n = n->next() ;
-    }
-    return false ;
+    return m_grid[position] ;
 }
 
 //! Get movement

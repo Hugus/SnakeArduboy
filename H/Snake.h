@@ -58,7 +58,7 @@ namespace H
         //! Has grown
         bool hasGrown() ;
 
-        private:
+        public:
         //! Snake movement
         bool move( const Direction direction ) ;
 
@@ -66,7 +66,7 @@ namespace H
         bool canMove( const Direction direction ) ;
 
         //! Is there a snake bone at this position
-        bool hasBone( const Position & position ) ;
+        bool hasBone( const Position & position ) const ;
 
         //! Get movement
         Position getMove( const Direction direction ) ;
@@ -74,7 +74,7 @@ namespace H
         //! Grow
         void grow( const Position & oldTail ) ;
 
-        private:
+        public:
         //! Snake bones
         List< Position > m_bones ;
 
@@ -94,6 +94,9 @@ namespace H
 
         //! Has grown
         bool m_hasGrown ;
+
+        //! Bone position bitmap
+        Grid m_grid ;
     } ;
 }
 #endif
