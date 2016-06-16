@@ -58,7 +58,7 @@ namespace H
         //! Has grown
         bool hasGrown() ;
 
-        public:
+        private:
         //! Snake movement
         bool move( const Direction direction ) ;
 
@@ -74,7 +74,7 @@ namespace H
         //! Grow
         void grow( const Position & oldTail ) ;
 
-        public:
+        private:
         //! Snake bones
         List< Position > m_bones ;
 
