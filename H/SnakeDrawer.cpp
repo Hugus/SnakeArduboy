@@ -52,6 +52,20 @@ H::SnakeDrawer::Draw
                          WHITE) ;
     }
 
+    // Draw portal
+    if ( snake.hasPortal() )
+    {
+
+        arduboy.drawRoundRect(DRAW_FACTOR * snake.portal()[0].x -DRAW_MARGIN, DRAW_FACTOR * snake.portal()[0].y +DRAW_MARGIN,
+                         DRAW_FACTOR, DRAW_FACTOR,
+                         DRAW_FACTOR_2,
+                         WHITE) ;
+        arduboy.drawRoundRect(DRAW_FACTOR * snake.portal()[1].x -DRAW_MARGIN, DRAW_FACTOR * snake.portal()[1].y +DRAW_MARGIN,
+                         DRAW_FACTOR, DRAW_FACTOR,
+                         DRAW_FACTOR_2,
+                         WHITE) ;
+    }
+
     // Draw walls
     arduboy.drawFastHLine( 2, 0, snake.getWidth() * DRAW_FACTOR - 2 * DRAW_MARGIN, WHITE ) ;
     arduboy.drawFastHLine( 2, snake.getHeight()* DRAW_FACTOR + DRAW_MARGIN, snake.getWidth() * DRAW_FACTOR - 2 * DRAW_MARGIN, WHITE ) ;

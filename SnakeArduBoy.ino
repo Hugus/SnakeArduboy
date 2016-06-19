@@ -94,6 +94,7 @@ void loop() {
         {
             gameState = RUNNING ;
             arduboy.initRandomSeed() ;
+            debounceButtons() ;
         }
         else
         {
@@ -172,11 +173,18 @@ void loop() {
                 frames = 0 ;
             }
 
+            // A Button capacities
+            if ( aPressed() )
+            {
+                // Try to spawn compressor
+                snake->showCompressor() ;
+            }
+
             // B Button capacities
             if ( bPressed() )
             {
-                // Try to spawn compressor or portal
-                snake->showCompressor() ;
+                // Try to spawn portal
+                snake->showPortal() ;
             }
         }
 
@@ -205,7 +213,7 @@ void loop() {
             frames = 0 ;
         }
 
-        // B button toggle sound (only in game over mode)
+        // B button toggle sound (in game over mode)
         if ( bPressed() )
         {
             toggleSound() ;
@@ -213,6 +221,7 @@ void loop() {
         }
 
     }
+
     // Display screen
     arduboy.display() ;
 }

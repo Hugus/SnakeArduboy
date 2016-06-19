@@ -60,11 +60,19 @@ namespace H
         //! Where is compressor
         const Position & compressor() const ;
 
+        //! Has portal ?
+        bool hasPortal() const ;
+        //! Where is portal
+        const Position * portal() const ;
+
         //! Has grown
         bool hasGrown() ;
 
         //! Enable a compressor if possible
         bool showCompressor() ;
+
+        //! Enable portal
+        bool showPortal() ;
 
         private:
         //! Snake movement
@@ -82,7 +90,7 @@ namespace H
         //! Grow
         void grow( const Position & oldTail ) ;
 
-        public:
+        private:
         //! Snake bones
         List< Position > m_bones ;
 
@@ -95,6 +103,11 @@ namespace H
         Position m_compressor ;
         //! Is compressor spawned ?
         bool m_isCompressor ;
+
+        //! There can be one portal at a time
+        Position m_portal[2] ;
+        //! Is portal spawned ?
+        bool m_isPortal ;
 
         //! Space width
         unsigned int m_width ;
@@ -113,6 +126,15 @@ namespace H
 
         //! Function pointer to random function
         unsigned int (*m_random)(unsigned int, unsigned int) ;
+
+        //! Apple count
+        unsigned int m_appleCount ;
+
+        //! Last compressor (in number of apples)
+        unsigned int m_lastCompressor ;
+
+        //! Last portal (in number of apples)
+        unsigned int m_lastPortal ;
     } ;
 }
 #endif

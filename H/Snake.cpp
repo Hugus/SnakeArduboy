@@ -2,6 +2,9 @@
 
 #define DELTA_POS 1
 
+#define COMPRESSOR_FRQ 10
+#define PORTAL_FRQ 15
+
 H::Snake::Snake
 (
     Position * pos[],
@@ -12,12 +15,16 @@ H::Snake::Snake
 )
 : m_isApple( false )
 , m_isCompressor( false )
+, m_isPortal( false )
 , m_width( width )
 , m_height( height )
 , m_currentDirection( RIGHT )
 , m_hasGrown( false )
 , m_grid( width, height )
 , m_random( random )
+, m_appleCount( 0 )
+, m_lastCompressor( 0 )
+, m_lastPortal( 0 )
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
@@ -211,6 +218,26 @@ const
     return m_compressor ;
 }
 
+//! Has portal ?
+bool
+H::Snake::hasPortal
+(
+)
+const
+{
+    return m_isPortal ;
+}
+
+//! Where is portal
+const H::Position *
+H::Snake::portal
+(
+)
+const
+{
+    return m_portal ;
+}
+
 //! Has grown
 bool
 H::Snake::hasGrown
@@ -231,18 +258,54 @@ H::Snake::showCompressor
 (
 )
 {
-
-    // Look for an empty spot
-    m_compressor.x = m_random( 1, m_width ) ;
-    m_compressor.y = m_random( 1, m_height ) ;
-    while( hasBone( m_compressor ) )
+    if ( m_appleCount >= m_lastCompressor + COMPRESSOR_FRQ )
     {
+        // If player wait n * COMPRESSOR_FRQ points he has n compressors in reserve
+        m_lastCompressor += COMPRESSOR_FRQ ;
+        // Look for an empty spot
         m_compressor.x = m_random( 1, m_width ) ;
         m_compressor.y = m_random( 1, m_height ) ;
+        while( hasBone( m_compressor ) || ( m_isApple && ( m_apple == m_compressor ) ) )
+        {
+            m_compressor.x = m_random( 1, m_width ) ;
+            m_compressor.y = m_random( 1, m_height ) ;
+        }
+        // Spawn an compressor
+        m_isCompressor = true ;
+        return true ;
     }
-    // Spawn an compressor
-    m_isCompressor = true ;
-    return true ;
+    return false ;
+}
+
+//! Enable portal if possible
+bool
+H::Snake::showPortal
+(
+)
+{
+    if ( m_appleCount >= m_lastPortal + PORTAL_FRQ )
+    {
+        // If player wait n * PORTAL_FRQ points he has n portals in reserve
+        m_lastPortal += PORTAL_FRQ ;
+        for ( unsigned int i = 0 ; i < 2 ; ++i )
+        {
+            // Look for an empty spot
+            m_portal[i].x = m_random( 1, m_width ) ;
+            m_portal[i].y = m_random( 1, m_height ) ;
+            while(  hasBone( m_portal[i] ) ||                     // No portal on existing bone
+                  ( m_isApple && ( m_apple == m_portal[i] ) ) ||  // Nor on apple
+                  ( ( i == 1 ) && m_portal[1] == m_portal[0] )    // Nor on other side of portal
+                 )
+            {
+                m_portal[i].x = m_random( 1, m_width ) ;
+                m_portal[i].y = m_random( 1, m_height ) ;
+            }
+        }
+        // Spawn an portal
+        m_isPortal = true ;
+        return true ;
+    }
+    return false ;
 }
 
 bool
@@ -273,6 +336,8 @@ H::Snake::move
     {
         // Hide apple
         hideApple() ;
+        // Count apple
+        ++m_appleCount ;
         // grow
         grow( *m_bones.head()->previous()->value() ) ;
     }
@@ -300,6 +365,36 @@ H::Snake::move
 
         // Only bone position
         m_grid[m_compressor] = true ;
+
+        // Hide compressor
+        m_isCompressor = false ;
+    }
+
+    // If we entered a portal
+    head = m_bones.head() ;
+    if ( m_isPortal && ( *head->value() == m_portal[0] ) )
+    {
+        // Set head at new position
+        *head->value() = m_portal[1] ;
+
+        // Update grid
+        m_grid[m_portal[1]] = true ;
+        m_grid[m_portal[0]] = false ;
+
+        // Hide portal
+        m_isPortal = false ;
+    }
+    else if (m_isPortal && ( *head->value() == m_portal[1] ) )
+    {
+        // Set head at new position
+        *head->value() = m_portal[0] ;
+
+        // Update grid
+        m_grid[m_portal[0]] = true ;
+        m_grid[m_portal[1]] = false ;
+
+        // Hide portal
+        m_isPortal = false ;
     }
 
     return true ;
