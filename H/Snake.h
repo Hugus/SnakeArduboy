@@ -57,11 +57,13 @@ namespace H
 
         //! Has compressor ?
         bool hasCompressor() const ;
+        bool hasCompressorAvailable() const ;
         //! Where is compressor
         const Position & compressor() const ;
 
         //! Has portal ?
         bool hasPortal() const ;
+        bool hasPortalAvailable() const ;
         //! Where is portal
         const Position * portal() const ;
 

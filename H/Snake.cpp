@@ -208,6 +208,16 @@ const
     return m_isCompressor ;
 }
 
+//! Has compressor ?
+bool
+H::Snake::hasCompressorAvailable
+(
+)
+const
+{
+    return m_appleCount >= ( m_lastCompressor + COMPRESSOR_FRQ ) ;
+}
+
 //! Where is compressor
 const H::Position &
 H::Snake::compressor
@@ -226,6 +236,16 @@ H::Snake::hasPortal
 const
 {
     return m_isPortal ;
+}
+
+//! Has portal ?
+bool
+H::Snake::hasPortalAvailable
+(
+)
+const
+{
+    return m_appleCount >= (m_lastPortal + PORTAL_FRQ) ;
 }
 
 //! Where is portal
@@ -258,7 +278,7 @@ H::Snake::showCompressor
 (
 )
 {
-    if ( m_appleCount >= m_lastCompressor + COMPRESSOR_FRQ )
+    if ( hasCompressorAvailable() )
     {
         // If player wait n * COMPRESSOR_FRQ points he has n compressors in reserve
         m_lastCompressor += COMPRESSOR_FRQ ;
@@ -283,7 +303,7 @@ H::Snake::showPortal
 (
 )
 {
-    if ( m_appleCount >= m_lastPortal + PORTAL_FRQ )
+    if ( hasPortalAvailable() )
     {
         // If player wait n * PORTAL_FRQ points he has n portals in reserve
         m_lastPortal += PORTAL_FRQ ;
