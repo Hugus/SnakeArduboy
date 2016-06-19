@@ -43,6 +43,15 @@ H::SnakeDrawer::Draw
                          WHITE) ;
     }
 
+
+    // Draw compressor
+    if ( snake.hasCompressor() )
+    {
+        arduboy.drawRect(DRAW_FACTOR * snake.compressor().x -DRAW_MARGIN, DRAW_FACTOR * snake.compressor().y +DRAW_MARGIN,
+                         DRAW_FACTOR, DRAW_FACTOR,
+                         WHITE) ;
+    }
+
     // Draw walls
     arduboy.drawFastHLine( 2, 0, snake.getWidth() * DRAW_FACTOR - 2 * DRAW_MARGIN, WHITE ) ;
     arduboy.drawFastHLine( 2, snake.getHeight()* DRAW_FACTOR + DRAW_MARGIN, snake.getWidth() * DRAW_FACTOR - 2 * DRAW_MARGIN, WHITE ) ;

@@ -31,24 +31,10 @@ enum GameState
     GAME_OVER
 } ;
 
-//! Show apple
-//! Should be implemented in Snake module but Snake has to be independant from
-//! Arduboy.
-bool
-H::Snake::showApple
-(
-)
+// Where is random definition ???
+unsigned int ardu_random( unsigned int min, unsigned int max )
 {
-    // Look for an empty spot
-    m_apple.x = random( 1, m_width ) ;
-    m_apple.y = random( 1, m_height ) ;
-    while( hasBone( m_apple ) )
-    {
-        m_apple.x = random( 1, m_width ) ;
-        m_apple.y = random( 1, m_height ) ;
-    }
-    // Spawn an apple
-    m_isApple = true ;
+    return random( min, max ) ;
 }
 
 //! Allocate and init snake
@@ -62,7 +48,7 @@ void init( H::Snake ** snake )
         pos[i]= new H::Position( 3 + i, ( HEIGHT - 1 )/8 ) ;
     }
 
-    *snake = new H::Snake( pos, INIT_SIZE, ( WIDTH - 20 )/8, ( HEIGHT - 1 )/4 ) ;
+    *snake = new H::Snake( pos, INIT_SIZE, ( WIDTH - 20 )/8, ( HEIGHT - 1 )/4, ardu_random ) ;
 }
 
 H::Snake * snake = NULL ;
@@ -125,6 +111,8 @@ void loop() {
     // If game running
     if ( gameState != GAME_OVER )
     {
+        // Actions before snake movement
+
         if ( upPressed() )
         {
             canMove = snake->up() ;
@@ -165,6 +153,8 @@ void loop() {
         }
         else
         {
+            // Actions after snake movement
+
             // Apple is rotten, hide it
             if ( frames == APPLE_PERIOD - 5 )
             {
@@ -180,6 +170,13 @@ void loop() {
             else if ( frames == APPLE_PERIOD )
             {
                 frames = 0 ;
+            }
+
+            // B Button capacities
+            if ( bPressed() )
+            {
+                // Try to spawn compressor or portal
+                snake->showCompressor() ;
             }
         }
 
@@ -207,14 +204,15 @@ void loop() {
             gameState = RUNNING ;
             frames = 0 ;
         }
-    }
-    // B button toggle sound
-    if ( bPressed() )
-    {
-        toggleSound() ;
-        debounceButtons() ;
-    }
 
+        // B button toggle sound (only in game over mode)
+        if ( bPressed() )
+        {
+            toggleSound() ;
+            debounceButtons() ;
+        }
+
+    }
     // Display screen
     arduboy.display() ;
 }

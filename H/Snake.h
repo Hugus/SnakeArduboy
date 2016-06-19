@@ -21,7 +21,7 @@ namespace H
         //! Constructor
         //! @param[in] pos position of bones at beginning
         //! @param[in] size snake size at beginning
-        Snake(Position * pos[], unsigned int size, unsigned int width, unsigned int height) ;
+        Snake(Position * pos[], unsigned int size, unsigned int width, unsigned int height, unsigned int (*random)(unsigned int, unsigned int)) ;
 
         //! Destructor
         ~Snake() ;
@@ -55,8 +55,16 @@ namespace H
         //! Where is apple
         const Position & apple() const ;
 
+        //! Has compressor ?
+        bool hasCompressor() const ;
+        //! Where is compressor
+        const Position & compressor() const ;
+
         //! Has grown
         bool hasGrown() ;
+
+        //! Enable a compressor if possible
+        bool showCompressor() ;
 
         private:
         //! Snake movement
@@ -74,7 +82,7 @@ namespace H
         //! Grow
         void grow( const Position & oldTail ) ;
 
-        private:
+        public:
         //! Snake bones
         List< Position > m_bones ;
 
@@ -82,6 +90,11 @@ namespace H
         Position m_apple ;
         //! Is apple spawned ?
         bool m_isApple ;
+
+        //! There can be one compressor at a time
+        Position m_compressor ;
+        //! Is compressor spawned ?
+        bool m_isCompressor ;
 
         //! Space width
         unsigned int m_width ;
@@ -97,6 +110,9 @@ namespace H
 
         //! Bone position bitmap
         Grid m_grid ;
+
+        //! Function pointer to random function
+        unsigned int (*m_random)(unsigned int, unsigned int) ;
     } ;
 }
 #endif

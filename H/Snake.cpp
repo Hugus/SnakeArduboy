@@ -1,22 +1,23 @@
 #include "Snake.h"
 
-#define SPEED 1
 #define DELTA_POS 1
-#define MARGIN 1 // Walls imply a margin
 
 H::Snake::Snake
 (
     Position * pos[],
     unsigned int size,
     unsigned int width,
-    unsigned int height
+    unsigned int height,
+    unsigned int (*random)(unsigned int, unsigned int)
 )
 : m_isApple( false )
+, m_isCompressor( false )
 , m_width( width )
 , m_height( height )
 , m_currentDirection( RIGHT )
 , m_hasGrown( false )
 , m_grid( width, height )
+, m_random( random )
 {
     for ( unsigned int i = 0 ; i < size ; ++i )
     {
@@ -142,6 +143,25 @@ H::Snake::keepGoing
     return false ;
 }
 
+//! Show apple
+bool
+H::Snake::showApple
+(
+)
+{
+    // Look for an empty spot
+    m_apple.x = m_random( 1, m_width ) ;
+    m_apple.y = m_random( 1, m_height ) ;
+    while( hasBone( m_apple ) )
+    {
+        m_apple.x = m_random( 1, m_width ) ;
+        m_apple.y = m_random( 1, m_height ) ;
+    }
+    // Spawn an apple
+    m_isApple = true ;
+    return true ;
+}
+
 //! Hide apple
 void
 H::Snake::hideApple
@@ -171,6 +191,25 @@ const
     return m_apple ;
 }
 
+//! Has compressor ?
+bool
+H::Snake::hasCompressor
+(
+)
+const
+{
+    return m_isCompressor ;
+}
+
+//! Where is compressor
+const H::Position &
+H::Snake::compressor
+(
+)
+const
+{
+    return m_compressor ;
+}
 
 //! Has grown
 bool
@@ -184,6 +223,26 @@ H::Snake::hasGrown
         return true ;
     }
     return false ;
+}
+
+//! Enable a compressor if possible
+bool
+H::Snake::showCompressor
+(
+)
+{
+
+    // Look for an empty spot
+    m_compressor.x = m_random( 1, m_width ) ;
+    m_compressor.y = m_random( 1, m_height ) ;
+    while( hasBone( m_compressor ) )
+    {
+        m_compressor.x = m_random( 1, m_width ) ;
+        m_compressor.y = m_random( 1, m_height ) ;
+    }
+    // Spawn an compressor
+    m_isCompressor = true ;
+    return true ;
 }
 
 bool
@@ -222,6 +281,25 @@ H::Snake::move
     {
         // Update grid (there is no more bone at tail position)
         m_grid[oldTail] = false ;
+    }
+
+    // If we entered a compressor
+    if ( m_isCompressor && ( *m_bones.head()->value() == m_compressor ) )
+    {
+        // Set all bones at compressor location
+        Node< Position > * n = m_bones.head() ;
+        const Node< Position > * head = m_bones.head() ;
+        while( n->next() != head )
+        {
+            m_grid[*n->value()] = false ;
+            *n->value() = m_compressor ;
+            n = n->next() ;
+        }
+        m_grid[*n->value()] = false ;
+        *n->value() = m_compressor ;
+
+        // Only bone position
+        m_grid[m_compressor] = true ;
     }
 
     return true ;
