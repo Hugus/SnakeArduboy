@@ -59,8 +59,9 @@ H::Snake * snake = NULL ;
 unsigned short frames = 0 ;
 GameState gameState = INIT ;
 unsigned int score = 0 ;
-unsigned int maxScore = 0 ;
+uint16_t maxScore = 0 ;
 bool black = true ;
+bool maxScoreSaved = false ;
 
 void setup() {
     arduboy.begin() ;
@@ -68,6 +69,7 @@ void setup() {
     sound.initChannel( PIN_SPEAKER_1 ) ;
     playSound( bing ) ;
     delay( 1500 ) ;
+    maxScore = readMaxScore() ;
 
     init( &snake ) ;
 }
@@ -115,8 +117,10 @@ void loop() {
     // If game running
     if ( gameState != GAME_OVER )
     {
+        // Reset maxScore save flag
+        maxScoreSaved = false ;
+      
         // Actions before snake movement
-
         if ( upPressed() )
         {
             canMove = snake->up() ;
@@ -205,6 +209,13 @@ void loop() {
         arduboy.setCursor( 5, 50 ) ;
         arduboy.print(score) ;
 
+        // Save max score
+        if ( !maxScoreSaved )
+        {
+            saveMaxScore( maxScore ) ;
+            maxScoreSaved = true ;
+        }
+
         // In game over state, A button re-init game
         if ( aPressed() )
         {
@@ -290,4 +301,28 @@ void debounceButtons() {
     // Wait for all keys released
     while ( arduboy.buttonsState() ) { }
     delay( 10 ) ;
+}
+
+void saveMaxScore( uint16_t maxS )
+{
+     EEPROM.update( EEPROM_STORAGE_SPACE_START, 0xC0 ) ;
+     EEPROM.update( EEPROM_STORAGE_SPACE_START+1, 0xFE ) ;
+     EEPROM.update( EEPROM_STORAGE_SPACE_START+2, ( maxS >> 8 ) & 0xFF ) ;
+     EEPROM.update( EEPROM_STORAGE_SPACE_START+3, maxS & 0xFF ) ;
+}
+
+uint16_t readMaxScore()
+{
+     byte co, fe ;
+     uint16_t maxS = 0 ;
+     co = EEPROM.read( EEPROM_STORAGE_SPACE_START ) ;
+     fe = EEPROM.read( EEPROM_STORAGE_SPACE_START + 1 ) ;
+     if ( co == 0xC0 && fe == 0xFE )
+     {
+         uint16_t l,h ;
+         h = EEPROM.read( EEPROM_STORAGE_SPACE_START+2 ) ;
+         l = EEPROM.read( EEPROM_STORAGE_SPACE_START+3 ) ;
+         maxS = ( h << 8 ) + l ;
+     }
+     return maxS ;
 }
