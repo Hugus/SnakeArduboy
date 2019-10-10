@@ -2,7 +2,7 @@
 #define SNAKE_DRAWER_H
 
 //! Forward declaration
-class Arduboy ;
+class Arduboy2 ;
 
 namespace H
 {
@@ -13,7 +13,7 @@ namespace H
     class SnakeDrawer
     {
         public:
-        static void Draw( Snake & snake, Arduboy & arduboy, unsigned int score, unsigned int maxScore ) ;
+        static void Draw( Snake & snake, Arduboy2 & arduboy, unsigned int score, unsigned int maxScore ) ;
     } ;
 }
 #endif

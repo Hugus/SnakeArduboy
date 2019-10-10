@@ -2,13 +2,15 @@
   ChanceWheel
 */
 
-#include <Arduboy.h>
-#include "H/Snake.h"
-#include "H/SnakeDrawer.h"
-#include "H/Position.h"
+#include <Arduboy2.h>
+#include <ArduboyPlaytune.h>
+#include "src/H/Snake.h"
+#include "src/H/SnakeDrawer.h"
+#include "src/H/Position.h"
 #include "assets.h"
 
-Arduboy arduboy ;
+Arduboy2 arduboy ;
+ArduboyPlaytune sound(arduboy.audio.enabled);
 
 #define FRAMES_PER_SECOND 10   // The update and refresh speed
 #define INIT_SIZE 3
@@ -63,6 +65,7 @@ bool black = true ;
 void setup() {
     arduboy.begin() ;
     arduboy.setFrameRate( FRAMES_PER_SECOND ) ;
+    sound.initChannel( PIN_SPEAKER_1 ) ;
     playSound( bing ) ;
     delay( 1500 ) ;
 
@@ -256,16 +259,13 @@ void playSound( const byte *score ) {
     // If sound is on
     if ( arduboy.audio.enabled() ) {
         // play the new sound
-        arduboy.tunes.playScore( score ) ;
+        sound.playScore( score ) ;
     }
 }
 
 void stopSound() {
-    // If something is playing
-    if ( arduboy.tunes.playing() ) {
-        // stop playing
-        arduboy.tunes.stopScore() ;
-    }
+    // stop playing
+    sound.stopScore() ;
 }
 
 void toggleSound() {
@@ -291,4 +291,3 @@ void debounceButtons() {
     while ( arduboy.buttonsState() ) { }
     delay( 10 ) ;
 }
-

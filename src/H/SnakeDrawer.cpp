@@ -3,7 +3,7 @@
 #include "Position.h"
 #include "Snake.h"
 
-#include <Arduboy.h>
+#include <Arduboy2.h>
 
 #define DRAW_FACTOR 4
 #define DRAW_FACTOR_2 2
@@ -13,7 +13,7 @@ void
 H::SnakeDrawer::Draw
 (
     Snake & snake,
-    Arduboy & arduboy,
+    Arduboy2 & arduboy,
     unsigned int score,
     unsigned int maxScore
 )
