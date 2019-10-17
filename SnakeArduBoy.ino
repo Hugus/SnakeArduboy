@@ -12,9 +12,9 @@
 Arduboy2 arduboy ;
 ArduboyPlaytune sound(arduboy.audio.enabled);
 
-#define FRAMES_PER_SECOND 10   // The update and refresh speed
+#define FRAMES_PER_SECOND 14   // The update and refresh speed
 #define INIT_SIZE 3
-#define APPLE_PERIOD 50 // Number of frames between apple spawns
+#define APPLE_PERIOD 80 // Number of frames between apple spawns
 
 // Sounds
 const byte PROGMEM bing [] = {
@@ -50,7 +50,7 @@ void init( H::Snake ** snake )
         pos[i]= new H::Position( 3 + i, ( HEIGHT - 1 )/8 ) ;
     }
 
-    *snake = new H::Snake( pos, INIT_SIZE, ( WIDTH - 20 )/8, ( HEIGHT - 1 )/4, ardu_random ) ;
+    *snake = new H::Snake( pos, INIT_SIZE, ( WIDTH ) / 4, ( HEIGHT - 10 )/4, ardu_random ) ;
 }
 
 H::Snake * snake = NULL ;
@@ -119,7 +119,7 @@ void loop() {
     {
         // Reset maxScore save flag
         maxScoreSaved = false ;
-      
+
         // Actions before snake movement
         if ( upPressed() )
         {

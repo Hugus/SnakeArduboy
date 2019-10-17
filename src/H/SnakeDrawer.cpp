@@ -74,33 +74,29 @@ H::SnakeDrawer::Draw
     arduboy.drawFastVLine( snake.getWidth()* DRAW_FACTOR - DRAW_MARGIN, DRAW_MARGIN, snake.getHeight() * DRAW_FACTOR , WHITE ) ;
 
     // Draw score
-    arduboy.setCursor( 65, 10 ) ;
-    arduboy.print("Score : ") ;
-    arduboy.setCursor( 110, 10 ) ;
+    arduboy.setCursor( 5, 56 ) ;
+    arduboy.print("Score") ;
+    arduboy.setCursor( 38, 56 ) ;
     arduboy.print(score) ;
-    arduboy.setCursor( 65, 20 ) ;
-    arduboy.print("Max   : ") ;
-    arduboy.setCursor( 110, 20 ) ;
+    arduboy.setCursor( 55, 56 ) ;
+    arduboy.print("Max") ;
+    arduboy.setCursor( 75, 56 ) ;
     arduboy.print(maxScore) ;
 
     // Draw info about portal or compressor
     if ( snake.hasCompressorAvailable() )
     {
-        arduboy.drawRect( 65 , 32,
+        arduboy.drawRect( 100 , 56,
                          DRAW_FACTOR, DRAW_FACTOR,
                          WHITE) ;
-        arduboy.setCursor( 72, 30 ) ;
-        arduboy.print("available") ;
     }
     // Draw info about portal or compressor
     if ( snake.hasPortalAvailable() )
     {
-        arduboy.drawRoundRect( 65 , 42,
+        arduboy.drawRoundRect( 108 , 56,
                          DRAW_FACTOR, DRAW_FACTOR,
                          DRAW_FACTOR_2,
                          WHITE) ;
-        arduboy.setCursor( 72, 40 ) ;
-        arduboy.print("available") ;
     }
 
 
