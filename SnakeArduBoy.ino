@@ -30,6 +30,7 @@ enum GameState
 {
     INIT,
     RUNNING,
+    PRE_GAME_OVER,
     GAME_OVER
 } ;
 
@@ -115,7 +116,7 @@ void loop() {
 
     bool canMove = false ;
     // If game running
-    if ( gameState != GAME_OVER )
+    if ( gameState == RUNNING )
     {
         // Reset maxScore save flag
         maxScoreSaved = false ;
@@ -157,7 +158,7 @@ void loop() {
         if ( ! canMove )
         {
             playSound( flap ) ;
-            gameState = GAME_OVER ;
+            gameState = PRE_GAME_OVER ;
         }
         else
         {
@@ -198,7 +199,26 @@ void loop() {
         // Draw snake
         H::SnakeDrawer::Draw( *snake, arduboy, score, maxScore ) ;
     }
-    else
+    else if ( gameState == PRE_GAME_OVER )
+    {
+        // Draw snake
+        H::SnakeDrawer::Draw( *snake, arduboy, score, maxScore ) ;
+
+        // Save max score
+        if ( !maxScoreSaved )
+        {
+            saveMaxScore( maxScore ) ;
+            maxScoreSaved = true ;
+        }
+
+        // In pre game over state, A button goes to game over
+        if ( aPressed() )
+        {
+            gameState = GAME_OVER ;
+            debounceButtons() ;
+        }
+    }
+    else if ( gameState == GAME_OVER )
     {
         // Draw game over bitmap
         arduboy.drawBitmap(0,0,game_over,128,64,WHITE);
@@ -208,13 +228,6 @@ void loop() {
         arduboy.print("Score") ;
         arduboy.setCursor( 5, 50 ) ;
         arduboy.print(score) ;
-
-        // Save max score
-        if ( !maxScoreSaved )
-        {
-            saveMaxScore( maxScore ) ;
-            maxScoreSaved = true ;
-        }
 
         // In game over state, A button re-init game
         if ( aPressed() )
